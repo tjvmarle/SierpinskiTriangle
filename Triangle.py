@@ -9,6 +9,7 @@ class Triangle:
         self.clrs = ((255,0,0),(0,255,0),(0,0,255))
         self.surface = surface
         self.top = top
+        self.width = width
 
         xLeft, _ = top
         xLeft -= width / 2 
@@ -32,7 +33,16 @@ class Triangle:
         self.pxl = (nextX, nextY)
         pxlInt = (int(nextX), int(nextY))
 
-        self.surface.set_at(pxlInt, random.choice(self.clrs))
+        rgb = []
+        for corner in self.corners:
+            x, y = corner
+            x_pos, y_pos = pxlInt
+            color = int((1 - math.sqrt(abs(x - x_pos)**2 + abs(y - y_pos)**2) / self.width) * 255)
+            rgb.append(color)
 
-        # self.surface.set_at(self.top, self.clr)
+        self.surface.set_at(pxlInt, rgb) # Weighted RGB
+        # pygame.draw.circle(self.surface, rgb, pxlInt, 1, 1) # Thicker dots weighted RGB
 
+        # self.surface.set_at(pxlInt, random.choice(self.clrs)) # Random RGB
+
+        # pygame.draw.circle(self.surface, random.choice(self.clrs), pxlInt, 1, 1) # Thicker dots
